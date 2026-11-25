@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|  MEng rerun - Chapter 2 cascade verification - OpenFOAM v2606               |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      nut;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "$FOAM_CASE/caseParameters"
+
+dimensions      [0 2 -1 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    // constraint patches by group (AutoGrid5: cyclic and empty; snappyHexMesh: cyclicAMI and empty).
+    // Not #includeEtc "caseDicts/setConstraintTypes": in v2606 it gives cyclicAMI "value $internalField",
+    // which fails once init_from_inc.py has copied in a non-uniform internal field (3 Nov).
+    cyclic      { type cyclic; }
+    cyclicAMI   { type cyclicAMI; }
+    empty       { type empty; }
+
+    row_1_INFLOW
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    row_1_OUTFLOW
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+    row_1_BLADE
+    {
+        type            calculated;
+        value           uniform 0;
+    }
+}
+
+// ************************************************************************* //

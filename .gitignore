@@ -1,0 +1,13 @@
+# written by the Allrun scripts
+**/constant/polyMesh/
+**/postProcessing/
+**/post/
+**/processor*/
+**/dynamicCode/
+log.*
+*.log
+# solution times (the start time 0 is kept)
+**/[0-9]*[0-9]/
+# Python
+__pycache__/
+*.pyc

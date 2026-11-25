@@ -1,0 +1,43 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|  MEng rerun - Chapter 2 cascade verification - OpenFOAM v2606               |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heRhoThermo;
+    mixture         pureMixture;
+    transport       sutherland;
+    thermo          hConst;
+    equationOfState perfectGas;
+    specie          specie;
+    energy          sensibleInternalEnergy;
+}
+
+mixture
+{
+    specie
+    {
+        molWeight       28.9;       // nMoles (v1712) removed: no longer used
+    }
+    thermodynamics
+    {
+        Cp              1004;
+        Hf              0;
+    }
+    transport
+    {
+        As              1.458e-06;
+        Ts              110.4;
+    }
+}
+
+// ************************************************************************* //

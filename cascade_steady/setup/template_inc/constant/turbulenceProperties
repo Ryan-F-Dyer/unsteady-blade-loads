@@ -1,0 +1,23 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|  MEng rerun - Chapter 2 cascade verification - OpenFOAM v2606               |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      turbulenceProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType  RAS;
+
+RAS
+{
+    model           SpalartAllmaras;    // "RASModel" in v1712
+    turbulence      on;
+    printCoeffs     on;
+}
+
+// ************************************************************************* //

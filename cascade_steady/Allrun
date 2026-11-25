@@ -1,0 +1,35 @@
+#!/bin/bash
+#------------------------------------------------------------------------------
+# Steady flow through the turbine cascade of Consigny and Richards (1982) on the medium snappyHexMesh level.
+#
+#   ./Allrun        needs the OpenFOAM v2606 environment and python3 with numpy and matplotlib; one core
+#
+# 1. the mesh is unpacked into the start case and the compressible case
+# 2. start field: incompressible flow with simpleFoam (init/), copied into 0/
+# 3. rhoSimpleFoam, 3 000 iterations
+# 4. blade force, surface pressure and isentropic Mach number (post/), compared with the run reported in the
+#    dissertation (reference/as_run_summary.json)
+#------------------------------------------------------------------------------
+cd "${0%/*}" || exit 1
+[ -n "$WM_PROJECT_DIR" ] || { echo "Load the OpenFOAM environment first (the case was written for v2606)."; exit 1; }
+. "$WM_PROJECT_DIR/bin/tools/RunFunctions"
+PY=${PY:-python3}
+
+for d in constant init/constant; do
+    [ -d "$d/polyMesh" ] || tar xzf setup/mesh/shm5u_L2/polyMesh.tar.gz -C "$d" || exit 1
+done
+
+( cd init && runApplication checkMesh && runApplication simpleFoam ) || exit 1
+grep -q '^End' init/log.simpleFoam || { echo "simpleFoam did not finish: see init/log.simpleFoam"; exit 1; }
+$PY setup/init_from_inc.py init . > log.init_from_inc 2>&1 || { echo "start fields not copied: see log.init_from_inc"; exit 1; }
+
+runApplication checkMesh
+runApplication rhoSimpleFoam
+grep -q '^End' log.rhoSimpleFoam || { echo "rhoSimpleFoam did not finish: see log.rhoSimpleFoam"; exit 1; }
+
+if $PY scripts/cascade_post.py . > log.post 2>&1; then
+    $PY scripts/compare_with_reference.py
+else
+    echo "post-processing failed: see log.post"
+fi
+#------------------------------------------------------------------------------

@@ -1,0 +1,41 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|  MEng rerun - Chapter 2 cascade verification - OpenFOAM v2606               |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "$FOAM_CASE/caseParameters"
+
+application     rhoSimpleFoam;
+
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         $iterations;       // v1712: 1 000; fields also written at 1 000 for the version check
+deltaT          1;
+
+writeControl    timeStep;
+writeInterval   $writeRho;         // 1 000, or the run length if it isn't a multiple of 1 000 (smoke test)
+purgeWrite      0;
+
+writeFormat     ascii;
+writePrecision  8;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+
+runTimeModifiable yes;
+
+functions
+{
+    #include "cascadeFunctions"
+}
+
+// ************************************************************************* //

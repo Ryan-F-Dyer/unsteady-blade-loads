@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|  MEng rerun - Chapter 2 cascade verification - OpenFOAM v2606               |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver          GAMG;
+        tolerance       1e-08;
+        relTol          1e-03;
+        smoother        GaussSeidel;
+        nPreSweeps      0;
+        nPostSweeps     2;
+        nFinestSweeps   2;
+        cacheAgglomeration true;
+        nCellsInCoarsestLevel 20;
+        agglomerator    faceAreaPair;
+        mergeLevels     1;
+    }
+
+    "(U|e|h|nuTilda)"
+    {
+        solver          smoothSolver;
+        smoother        GaussSeidel;
+        nSweeps         1;
+        tolerance       1e-08;
+        relTol          1e-01;
+    }
+}
+
+SIMPLE
+{
+    nNonOrthogonalCorrectors 3;
+    consistent      yes;                // SIMPLEC
+    transonic       no;
+    // v1712 'rhoMin 0; rhoMax 1000;' removed: not used by v2606 rhoSimpleFoam
+}
+
+relaxationFactors
+{
+    fields
+    {
+        p               0.3;
+        rho             0.05;
+    }
+    equations
+    {
+        p               0.9;
+        U               0.95;
+        h               0.8;
+        nuTilda         0.95;
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,41 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|  MEng rerun - Chapter 2 cascade - incompressible (simpleFoam) - v2606       |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "$FOAM_CASE/caseParameters"
+
+application     simpleFoam;
+
+startFrom       latestTime;
+startTime       0;
+stopAt          endTime;
+endTime         $iterationsInc;
+deltaT          1;
+
+writeControl    timeStep;
+writeInterval   $writeInc;         // 1 000, or the run length if it isn't a multiple of 1 000 (smoke test)
+purgeWrite      0;
+
+writeFormat     ascii;              // ascii: the compressible run is initialised from these fields
+writePrecision  8;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+
+runTimeModifiable yes;
+
+functions
+{
+    #include "cascadeFunctions"
+}
+
+// ************************************************************************* //

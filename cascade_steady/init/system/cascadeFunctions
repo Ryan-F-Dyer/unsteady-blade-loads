@@ -1,0 +1,66 @@
+// Function objects for the incompressible runs (included by controlDict)
+
+bladeSurface
+{
+    type            surfaces;
+    libs            (sampling);
+    writeControl    writeTime;
+    surfaceFormat   raw;
+    fields          (p);
+    interpolationScheme cell;
+    surfaces
+    {
+        blade
+        {
+            type        patch;
+            patches     (row_1_BLADE);
+            interpolate false;
+        }
+    }
+}
+
+bladeForce
+{
+    type            forces;
+    libs            (forces);
+    writeControl    timeStep;
+    writeInterval   1;
+    patches         (row_1_BLADE);
+    rho             rhoInf;
+    rhoInf          1;                  // kinematic pressure carried as Pa-like numbers (rho = 1)
+    CofR            (0 0 0);
+    log             false;
+}
+
+inletState
+{
+    type            surfaceFieldValue;
+    libs            (fieldFunctionObjects);
+    writeControl    writeTime;
+    log             false;
+    writeFields     false;
+    regionType      patch;
+    name            row_1_INFLOW;
+    operation       areaAverage;
+    fields          (U p);
+}
+
+yPlus
+{
+    type            yPlus;
+    libs            (fieldFunctionObjects);
+    executeControl  writeTime;          // only when fields are written: computed every iteration, its square
+                                        // root was the first thing to fail on a transient bad wall value (5 Nov)
+    writeControl    writeTime;
+    log             false;
+}
+
+residuals
+{
+    type            solverInfo;
+    libs            (utilityFunctionObjects);
+    fields          (U p nuTilda);
+    writeResidualFields no;
+}
+
+// ************************************************************************* //

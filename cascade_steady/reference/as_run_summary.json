@@ -1,0 +1,72 @@
+{
+ "case": "shm5u_L2_VIBC_m2",
+ "solver": "rhoSimpleFoam",
+ "inlet": "VIBC",
+ "Tu": 0.8,
+ "beta": 30.0,
+ "mesh": "shm5u_L2",
+ "Uin": 83.9544,
+ "numerics": "hc_u95",
+ "wall": "lowRe",
+ "mesh_cells": 48705.0,
+ "mesh_max_nonorth": 38.738591,
+ "mesh_mean_nonorth": 2.6020822,
+ "mesh_max_skewness": 7.1574098,
+ "mesh_max_aspect_ratio": 108.97161,
+ "mesh_failed_checks": 1.0,
+ "mesh_ok": false,
+ "mesh_check_note": "Max skewness = 7.1574098, 3 highly skew faces detected which may impair the quality of the results",
+ "surface_times": [
+  "1000",
+  "2000"
+ ],
+ "faces": 1026,
+ "faces_SS": 584,
+ "faces_PS": 442,
+ "p_SS_25": 107180.60185119878,
+ "p_SS_50": 95507.88817844338,
+ "p_SS_75": 94237.18094669085,
+ "p_PS_25": 125851.01984932426,
+ "p_PS_50": 122801.09931951125,
+ "p_PS_75": 113946.0756302528,
+ "Mis_peak_SS": 0.6836153559553292,
+ "Mis_peak_SS_at_s_c": 1.249350250076942,
+ "blade_force_N": [
+  1.07519584,
+  1.31091533
+ ],
+ "force_change_last_500_pct": 0.0005069700488632479,
+ "span_m": 0.0010000000000000009,
+ "force_per_span_N_m": [
+  1075.3011485599989,
+  1310.825129059999
+ ],
+ "force_per_span_last_N_m": [
+  1075.195839999999,
+  1310.915329999999
+ ],
+ "residual_Uy_initial": 0.00016455595,
+ "residual_Uz_initial": 0.00066064711,
+ "residual_h_initial": 6.4819177e-05,
+ "residual_nuTilda_initial": 0.0028171443,
+ "residual_p_initial": 4.7768208e-05,
+ "inlet_U": [
+  0.0,
+  41.9772,
+  72.7066
+ ],
+ "inlet_Umag": 83.95436262279644,
+ "inlet_angle_deg": 30.00001472738277,
+ "inlet_p": 123811.144,
+ "inlet_T": 415.500131,
+ "p0_in_mass": 127499.8690146138,
+ "p0_out_mass": 126210.15420695872,
+ "p_out_mass": 98380.9862,
+ "loss_coefficient": 0.044291356088971084,
+ "exit_Mis_mass": 0.6200370717747692,
+ "mass_flow_per_span_kg_s_m": 4.036312039999997,
+ "yPlus_min": 0.0028921478,
+ "yPlus_max": 0.419361786,
+ "yPlus_mean": 0.292073344,
+ "note": "Result of the run reported in the dissertation (case shm5u_L2_VIBC_m2, 2 000 iterations continued from a converged run at 84.0 m/s). Quantities that compare with other solvers are left out."
+}

@@ -1,0 +1,64 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|  MEng rerun - Chapter 2 cascade verification - OpenFOAM v2606               |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      fvSchemes;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+ddtSchemes
+{
+    default         steadyState;
+}
+
+gradSchemes
+{
+    default         Gauss linear;       // v1712: none (safety net for new terms)
+    grad(p)         Gauss linear;
+    limited         cellLimited Gauss linear 1;
+    grad(U)         Gauss linear;
+    grad(e)         faceLimited Gauss linear 0.5;
+    grad(nuTilda)   Gauss linear;
+}
+
+divSchemes
+{
+    default         none;
+    div(phi,U)      Gauss linearUpwind grad(U);
+    div(phi,h)      bounded Gauss linearUpwind grad(h);
+    div(phi,K)      bounded Gauss linearUpwind limited;
+    div(phi,e)      Gauss linearUpwind grad(e);
+    div(phi,nuTilda) Gauss linearUpwind grad(nuTilda);
+    div(phid,p)     Gauss linearUpwind grad(p);
+    div(phi,Ekp)    bounded Gauss upwind;
+    div((phi|interpolate(rho)),p) Gauss upwind;
+    div(((rho*nuEff)*dev2(T(grad(U))))) Gauss linear;
+}
+
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+}
+
+snGradSchemes
+{
+    default         corrected;
+}
+
+wallDist
+{
+    method          meshWave;
+    correctWalls    true;               // v1712 had 'correctedWalls = true' (ignored); true is the default
+}
+
+// ************************************************************************* //

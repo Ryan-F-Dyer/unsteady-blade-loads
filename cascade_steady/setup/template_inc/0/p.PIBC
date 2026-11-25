@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|  MEng rerun - Chapter 2 cascade - incompressible (simpleFoam) - v2606       |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      p.PIBC;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "$FOAM_CASE/caseParameters"
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform $pOutlet;
+
+boundaryField
+{
+    // constraint patches by group (AutoGrid5: cyclic and empty; snappyHexMesh: cyclicAMI and empty).
+    // Not #includeEtc "caseDicts/setConstraintTypes": in v2606 it gives cyclicAMI "value $internalField",
+    // which fails once init_from_inc.py has copied in a non-uniform internal field (3 Nov).
+    cyclic      { type cyclic; }
+    cyclicAMI   { type cyclicAMI; }
+    empty       { type empty; }
+
+    row_1_INFLOW
+    {
+        type            totalPressure;                  // incompressible form: p0 - |U|^2/2
+        p0              uniform $p0Inlet;
+        rho             none;
+        psi             none;
+        gamma           1;
+        value           uniform $pOutlet;
+    }
+    row_1_OUTFLOW
+    {
+        type            fixedMean;
+        meanValue       constant $pOutlet;
+        value           uniform $pOutlet;
+    }
+    row_1_BLADE
+    {
+        type            zeroGradient;
+    }
+}
+
+// ************************************************************************* //

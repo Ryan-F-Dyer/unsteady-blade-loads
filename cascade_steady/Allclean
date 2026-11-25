@@ -1,0 +1,8 @@
+#!/bin/bash
+# Remove everything that Allrun writes: the unpacked mesh, the solutions, the logs and the post-processing.
+cd "${0%/*}" || exit 1
+rm -rf constant/polyMesh init/constant/polyMesh postProcessing init/postProcessing dynamicCode processor* log.* init/log.*
+rm -f post/*
+for d in . init; do
+    find "$d" -maxdepth 1 -type d -regex '.*/[0-9][0-9.eE+-]*' ! -name 0 -exec rm -rf {} +
+done

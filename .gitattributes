@@ -1,0 +1,5 @@
+# Unix line endings everywhere: the Allrun scripts and the OpenFOAM dictionaries are read on Linux
+* text=auto eol=lf
+*.tar.gz binary
+*.gz binary
+*.png binary
